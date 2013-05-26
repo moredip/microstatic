@@ -5,7 +5,7 @@ require 'aws/s3'
 
 # The following is based on code generously 
 # shared by Giles Alexander (@gga)
-class S3Deployer
+class Microstatic::S3Deployer
   def initialize( local_dir, bucket, aws_creds )
     [:access_key_id,:secret_access_key].each do |required_key|
       raise ArgumentError, "must supply :#{required_key}" unless aws_creds.key?(required_key)

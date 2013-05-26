@@ -1,6 +1,7 @@
 require_relative 'spec_helper'
 require_relative '../../lib/microstatic/s3_deployer'
 
+module Microstatic
 describe 'uploading to a test bucket' do
   def test_bucket
     'microstatic-test-bucket'
@@ -22,4 +23,5 @@ describe 'uploading to a test bucket' do
     deployer.upload
   end
   
+end
 end
