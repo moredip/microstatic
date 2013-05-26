@@ -14,4 +14,11 @@ Gem::Specification.new do |gem|
   gem.name          = "microstatic"
   gem.require_paths = ["lib"]
   gem.version       = Microstatic::VERSION
+
+  gem.add_runtime_dependency "aws-s3", "~>0.6.3"
+
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "bundler"
+  gem.add_development_dependency "rspec", "~>2.13.0"
+  gem.add_development_dependency "pry-nav", "~> 0.2.3"
 end
