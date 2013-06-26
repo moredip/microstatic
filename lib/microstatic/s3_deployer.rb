@@ -1,23 +1,20 @@
 require 'digest/md5'
 require 'pathname'
 
-require 'aws/s3'
 
 # The following is based on code generously 
 # shared by Giles Alexander (@gga)
 class Microstatic::S3Deployer
+  include UsesS3
   def initialize( local_dir, bucket, aws_creds )
-    [:access_key_id,:secret_access_key].each do |required_key|
-      raise ArgumentError, "must supply :#{required_key}" unless aws_creds.key?(required_key)
-    end
+    check_and_store_aws_creds(aws_creds)
 
     @local_dir = Pathname.new(local_dir)
     @bucket = bucket
-    @aws_creds = aws_creds
   end
 
   def upload
-    AWS::S3::Base.establish_connection!(@aws_creds)
+    connect_to_s3
 
     Pathname.glob(@local_dir+"**/*") do |child|
       upload_file(child) unless child.directory?
@@ -35,7 +32,7 @@ class Microstatic::S3Deployer
 
     if !s3_object
       log_action('CREATE', s3_key)
-      AWS::S3::S3Object.store(s3_key, file.open, @bucket)
+      AWS::S3::S3Object.store( s3_key, file.open, @bucket, :access => :public_read )
     else
       s3_md5 = s3_object.about['etag'].sub(/"(.*)"/,'\1')
       local_md5 = Digest::MD5.hexdigest( file.read )
