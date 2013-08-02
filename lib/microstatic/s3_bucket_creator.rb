@@ -1,18 +1,24 @@
-require 'aws/s3'
+module Microstatic
 
-class Microstatic::S3BucketCreator
-  include UsesS3
+class S3BucketCreator
+  include UsesFog
 
   def initialize( suffix, aws_creds )
     check_and_store_aws_creds(aws_creds)
-    @suffix = suffix
+    if suffix.start_with?(".")
+      @suffix = suffix
+    else
+      @suffix = "."+suffix
+    end
   end
 
   def create( name )
-    connect_to_s3
-
     bucket_name = name + @suffix
-    AWS::S3::Bucket.create( bucket_name, :access => :public_read )
+    connection.put_bucket( bucket_name )
+    connection.put_bucket_acl( bucket_name, 'public-read' )
+    connection.put_bucket_website( bucket_name, 'index.html', :key => '404.html' )
   end
+
+end
 
 end
