@@ -1,17 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'microstatic'
+require 'microstatic/cli'
 
-if ARGV.empty?
-  puts 'please specify a bucket name'
-  exit 1
-end
-
-bucket_name = ARGV[0]
-
-bucket_creator = Microstatic::S3BucketCreator.new( Microstatic.aws_creds_from_env )
-
-puts "creating bucket #{bucket_name} ..."
-bucket_creator.create( bucket_name )
-
-puts "done"
+Microstatic::CLI.start(ARGV)

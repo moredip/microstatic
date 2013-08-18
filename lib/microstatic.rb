@@ -1,5 +1,6 @@
 require "microstatic/version"
 
+require 'microstatic/config'
 require 'microstatic/uses_fog'
 
 require "microstatic/s3_deployer"
