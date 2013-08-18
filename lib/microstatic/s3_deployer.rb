@@ -31,7 +31,7 @@ class S3Deployer
 
     if !s3_object
       log_action('CREATE', s3_key)
-      connection.put_object( @bucket, s3_key, file.open, 'x-amz-acl' => 'public-read' )
+      put_file( s3_key, file )
     else
       s3_md5 = s3_object.headers['ETag'].sub(/"(.*)"/,'\1')
       local_md5 = Digest::MD5.hexdigest( file.read )
@@ -40,9 +40,15 @@ class S3Deployer
         log_action('NO CHANGE', s3_key)
       else
         log_action('UPDATE', s3_key)
-        connection.put_object( @bucket, s3_key, file.open )
+        put_file( s3_key, file )
       end
     end
+  end
+
+  private
+
+  def put_file( s3_key, file )
+    connection.put_object( @bucket, s3_key, file.open, 'x-amz-acl' => 'public-read', 'x-amz-storage-class' => 'REDUCED_REDUNDANCY' )
   end
 
   def log_action(action,file)
