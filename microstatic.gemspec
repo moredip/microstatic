@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Microstatic::VERSION
 
-  # gem.add_runtime_dependency "fog", ">=1"
+  gem.add_runtime_dependency "fog", ">=1"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "bundler"
