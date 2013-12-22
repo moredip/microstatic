@@ -39,7 +39,7 @@ class S3DeployTask < ::Rake::TaskLib
   end
 end
 
-def self.s3_deploy_task(opts)
+def self.s3_deploy_task(opts = {})
   task = S3DeployTask.new( opts )
   yield task if block_given?
   task.define
