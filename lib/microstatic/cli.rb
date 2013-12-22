@@ -16,6 +16,7 @@ module Microstatic
     def bucket( bucket_name = false )
       bucket_name ||= guess_bucket_name
       # TODO: check it doesn't already exist for you
+      # TODO: check bucket_name looks like a site name (e.g. foo.thepete.net, not just foo)
       # TODO: handle the bucket name already being taken by someone else
       # TODO: fail gracefully if aws creds not available
       
