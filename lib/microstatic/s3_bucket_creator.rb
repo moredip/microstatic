@@ -8,9 +8,12 @@ class S3BucketCreator
   end
 
   def create( bucket_name )
-    connection.put_bucket( bucket_name )
-    connection.put_bucket_acl( bucket_name, 'public-read' )
-    connection.put_bucket_website( bucket_name, 'index.html', :key => '404.html' )
+    # TODO: can we create a new directory without eagerly fetch the list of all dirs?
+    directory = connection.directories.create( :key => bucket_name, :public => true )
+    # TODO: can I do this by calling a method on directory? 
+    connection.put_bucket_website( directory.key, 'index.html', :key => '404.html' )
+
+    directory
   end
 end
 

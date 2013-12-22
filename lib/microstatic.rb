@@ -5,6 +5,7 @@ require 'microstatic/uses_fog'
 
 require "microstatic/s3_deployer"
 require "microstatic/s3_bucket_creator"
+require "microstatic/route53_dns"
 
 module Microstatic
   def self.aws_creds_from_env

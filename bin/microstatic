@@ -3,4 +3,6 @@
 require 'microstatic'
 require 'microstatic/cli'
 
+require 'pry' if ENV.has_key? 'PRY_PLEASE'
+
 Microstatic::CLI.start(ARGV)

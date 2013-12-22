@@ -8,8 +8,11 @@ module Microstatic
       app_name ||= inferred_app_name
       bucket_name = subdomain_for(app_name)
 
-      bucket( bucket_name )
+      bucket = bucket( bucket_name )
+      # TODO: pass bucket through to dns setup so we don't have to look it up again
       dns( app_name )
+
+      # TODO: add Rakefile, Gemfile, etc for doing a rake deploy using this gem
     end
 
     desc "bucket <BUCKET_NAME>", "create an S3 bucket which can host your static site"
@@ -31,7 +34,7 @@ module Microstatic
       bucket_name = subdomain_for(app_name)
 
       describe_operation( "create Route 53 entry '#{bucket_name}'" ) do
-        raise 'TODO'
+        Route53Dns.new( config.aws_creds ).add_s3_record_for_bucket( bucket_name )
       end
     end
 
