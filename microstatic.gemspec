@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency "fog", ">=1"
   gem.add_runtime_dependency "thor", ">=0.15" # 0.15 is an arbitrary guess at what might be API-compatible
-  gem.add_runtime_dependency "rainbow", ">= 1.1"
+  gem.add_runtime_dependency "rainbow", ">= 2.0"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "bundler"

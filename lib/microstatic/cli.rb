@@ -85,8 +85,8 @@ module Microstatic
       raise
     end
 
-    CHECKMARK="\u2713".color(:green)
-    SADMARK="\u2718".color(:red)
+    CHECKMARK=Rainbow("\u2713").color(:green)
+    SADMARK=Rainbow("\u2718").color(:red)
 
   end
 end
