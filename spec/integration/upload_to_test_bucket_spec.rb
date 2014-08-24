@@ -20,6 +20,7 @@ describe 'uploading to a test bucket' do
 
   it 'succeeds' do
     deployer = S3Deployer.new( test_dir, test_bucket, aws_creds )
+    deployer.file_list.exclude(%r|ignored/|)
     deployer.upload
   end
   

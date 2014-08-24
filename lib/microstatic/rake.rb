@@ -4,7 +4,7 @@ require 'rake/tasklib'
 module Microstatic module Rake
 
 class S3DeployTask < ::Rake::TaskLib
-  attr_accessor :name, :bucket_name, :source_dir, :aws_access_key_id, :aws_secret_access_key
+  attr_accessor :name, :bucket_name, :source_dir, :exclude, :aws_access_key_id, :aws_secret_access_key
 
   def initialize( opts = {} )
     if opts.is_a?(String) || opts.is_a?(Symbol)
@@ -16,6 +16,7 @@ class S3DeployTask < ::Rake::TaskLib
     @aws_secret_access_key = opts.fetch( :aws_secret_access_key ) { ENV.fetch('AWS_SECRET_ACCESS_KEY') }
     @bucket_name = opts.fetch( :bucket_name, false )
     @source_dir = opts.fetch( :source_dir, false )
+    @exclude = opts.fetch( :exclude, false )
   end
 
   def define
@@ -34,6 +35,7 @@ class S3DeployTask < ::Rake::TaskLib
     desc "deploy to the '#{bucket_name}' S3 bucket" unless ::Rake.application.last_comment
     task name do
       deployer = Microstatic::S3Deployer.new( source_dir, bucket_name, aws_creds )
+      deployer.file_list.exclude(@exclude) if @exclude
       deployer.upload
     end
   end
