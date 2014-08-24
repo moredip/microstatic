@@ -18,8 +18,8 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "fog", ">=1"
   gem.add_runtime_dependency "thor", ">=0.15" # 0.15 is an arbitrary guess at what might be API-compatible
   gem.add_runtime_dependency "rainbow", ">= 2.0"
+  gem.add_runtime_dependency "rake"           # we use Rake::FileList to specify which files to upload
 
-  gem.add_development_dependency "rake"
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rspec", "~>2.13.0"
   gem.add_development_dependency "pry-nav", "~> 0.2.3"

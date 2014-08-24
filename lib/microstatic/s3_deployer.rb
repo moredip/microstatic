@@ -1,5 +1,6 @@
 require 'digest/md5'
 require 'pathname'
+require 'rake/file_list'
 
 module Microstatic
 
@@ -7,16 +8,21 @@ module Microstatic
 # shared by Giles Alexander (@gga)
 class S3Deployer
   include UsesFog
+
+  attr_reader :file_list # TODO: don't expose this directly
+
   def initialize( local_dir, bucket, aws_creds )
     check_and_store_aws_creds(aws_creds)
 
     @local_dir = Pathname.new(local_dir)
+    @file_list = Rake::FileList.new( (@local_dir+"**/*").to_s )
     @bucket = bucket
   end
 
   def upload
-    Pathname.glob(@local_dir+"**/*") do |child|
-      upload_file(child) unless child.directory?
+    @file_list.each do |entry|
+      entry = Pathname.new(entry)
+      upload_file(entry) unless entry.directory?
     end
   end
 
