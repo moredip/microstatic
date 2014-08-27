@@ -35,7 +35,7 @@ class S3DeployTask < ::Rake::TaskLib
     desc "deploy to the '#{bucket_name}' S3 bucket" unless ::Rake.application.last_comment
     task name do
       deployer = Microstatic::S3Deployer.build( source_dir, bucket_name, aws_creds )
-      deployer.file_list.exclude(@exclude) if @exclude
+      deployer.exclude_files(@exclude) if @exclude
       deployer.upload
     end
   end

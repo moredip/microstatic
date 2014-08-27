@@ -5,8 +5,6 @@ require 'rake/file_list'
 module Microstatic
 class S3Deployer
 
-  attr_reader :file_list # TODO: don't expose this directly
-
   def self.build( local_dir, bucket, aws_creds )
     uploader = Uploader.new( local_dir, bucket, aws_creds )
     new( local_dir, uploader )
@@ -16,6 +14,10 @@ class S3Deployer
     @local_dir = Pathname.new(local_dir)
     @file_list = ::Rake::FileList.new( (@local_dir+"**/*").to_s )
     @uploader = uploader
+  end
+
+  def exclude_files(*args)
+    @file_list.exclude(*args)
   end
 
   def upload
