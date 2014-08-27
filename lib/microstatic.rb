@@ -3,6 +3,7 @@ require "microstatic/version"
 require 'microstatic/config'
 require 'microstatic/uses_fog'
 
+require "microstatic/uploader"
 require "microstatic/s3_deployer"
 require "microstatic/s3_bucket_creator"
 require "microstatic/route53_dns"
