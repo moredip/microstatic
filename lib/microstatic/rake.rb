@@ -12,8 +12,8 @@ class S3DeployTask < ::Rake::TaskLib
     end
 
     @name = opts.fetch( :name ) { :s3deploy }
-    @aws_access_key_id = opts.fetch( :aws_access_key_id ) { ENV.fetch('AWS_ACCESS_KEY_ID') }
-    @aws_secret_access_key = opts.fetch( :aws_secret_access_key ) { ENV.fetch('AWS_SECRET_ACCESS_KEY') }
+    @aws_access_key_id = opts.fetch( :aws_access_key_id ) { ENV.fetch('AWS_ACCESS_KEY_ID',false) }
+    @aws_secret_access_key = opts.fetch( :aws_secret_access_key ) { ENV.fetch('AWS_SECRET_ACCESS_KEY',false) }
     @bucket_name = opts.fetch( :bucket_name, false )
     @source_dir = opts.fetch( :source_dir, false )
     @exclude = opts.fetch( :exclude, false )
