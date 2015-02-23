@@ -24,16 +24,17 @@ class S3DeployTask < ::Rake::TaskLib
 
     raise 'must specify bucket_name' unless bucket_name
     raise 'must specify source_dir' unless source_dir
-    raise 'must specify aws_access_key_id' unless aws_access_key_id
-    raise 'must specify aws_secret_access_key' unless aws_secret_access_key
-
-    aws_creds = {
-      :access_key_id => aws_access_key_id,
-      :secret_access_key => aws_secret_access_key
-    }
 
     desc "deploy to the '#{bucket_name}' S3 bucket" unless ::Rake.application.last_comment
     task name do
+
+      raise 'must specify aws_access_key_id' unless aws_access_key_id
+      raise 'must specify aws_secret_access_key' unless aws_secret_access_key
+      aws_creds = {
+        :access_key_id => aws_access_key_id,
+        :secret_access_key => aws_secret_access_key
+      }
+
       deployer = Microstatic::S3Deployer.build( source_dir, bucket_name, aws_creds )
       deployer.exclude_files(@exclude) if @exclude
       deployer.upload
