@@ -18,8 +18,13 @@ class Uploader
     begin
       s3_object = connection.head_object(@bucket,s3_key)
     rescue Excon::Errors::NotFound
+      log_action("NOT FOUND", s3_key)
+      s3_object = false
+    rescue Excon::Errors::Forbidden
+      log_action("FORBIDDEN", s3_key)
       s3_object = false
     end
+
 
     if s3_object
       update_object_if_changed(s3_key, pathname,s3_object)
