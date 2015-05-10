@@ -7,10 +7,10 @@ class Route53Dns
     check_and_store_aws_creds(aws_creds)
   end
 
-  def add_s3_record_for_bucket( bucket_name, hostname = false )
-    subdomain ||= bucket_name
+  def add_s3_record_for_bucket( bucket_name, zone_name = false )
+    subdomain = bucket_name
+    zone = lookup_zone(zone_name || guess_zone_from_subdomain(subdomain) )
 
-    zone = parent_zone_for_subdomain( subdomain )
     cname_value = website_endpoint_for_bucket_named( bucket_name )
 
     record = zone.records.create(
@@ -32,9 +32,13 @@ class Route53Dns
     bucket_website_endpoint = "#{bucket.key}.s3-website-#{bucket.location}.amazonaws.com"
   end
 
-  def parent_zone_for_subdomain( subdomain )
-    zone_name = subdomain.split(".")[1..-1].push("").join(".")
+  def lookup_zone( zone_name )
+    zone_name << "." unless zone_name.end_with?(".")
     dns.zones.find{ |x| x.domain == zone_name }
+  end
+
+  def guess_zone_from_subdomain( subdomain )
+    subdomain.split(".")[1..-1].join(".")
   end
 
 end
